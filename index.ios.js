@@ -11,7 +11,7 @@ import React, {
   View
 } from 'react-native';
 
-class RNDemo extends Component {
+class DemoProject extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('RNDemo', () => DemoProject);
+AppRegistry.registerComponent('DemoProject', () => DemoProject);
