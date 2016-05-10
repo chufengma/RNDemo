@@ -12,10 +12,16 @@ import React, {
     TouchableHighlight,
 } from 'react-native';
 
+
+
+
 class Button extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            mStyle: styles.btn,
+        };
     }
 
     onBtnPress() {
@@ -25,10 +31,10 @@ class Button extends Component {
     render() {
         return (
             <TouchableHighlight
-                underlayColor={this.props.underlayColor}
-                activeOpacity={0.5}
-                style={styles.btn}
-                onPress={this.onBtnPress}>
+                underlayColor='#81c04d8f'
+                activeOpacity={1}
+                style={this.state.mStyle}
+                onPress={this.props.onPress}>
                 <Text style={styles.text}>
                     {this.props.text}
                 </Text>
@@ -38,11 +44,12 @@ class Button extends Component {
 }
 
 const styles = StyleSheet.create({
+
     btn: {
         marginTop: 15,
         marginLeft: 10,
         marginRight: 10,
-        backgroundColor: '#ff3322',
+        backgroundColor: '#81c04d',
         borderColor: '#5bc0de',
         borderRadius: 5,
         justifyContent: 'center',
@@ -52,8 +59,8 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        fontSize:16,
-        color:'#fff'
+        fontSize: 16,
+        color: '#fff'
     }
 });
 

@@ -12,6 +12,7 @@ import React, {
     View,
     ToastAndroid,
     PixelRatio,
+    Animated
 } from 'react-native';
 
 var Button = require("./Button");
@@ -23,19 +24,13 @@ class DemoProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            testFlag: false,
-            testStr: "Fengma is a greate man",
-        };
-
-        this.test = {
-            testStr: "Ok , it is test",
+            transXValue: new Animated.Value(0),
+            scaleXValue: new Animated.Value(1),
+            rotateValue: new Animated.Value(0),
         };
     }
 
     render() {
-
-        // this.setState({testStr: "hahaha"});
-
         return (
             <View style={styles.container}>
                 <View style={styles.title_layout}>
@@ -47,25 +42,51 @@ class DemoProject extends Component {
                         Like
                     </Text>
                 </View>
-                <Button underlayColor='#ff3322'
-                        style={styles.style_view_button}
+                <Button
                         text='登录有点击效果'
                         onPress={this.onBtnPress}>
                 </Button>
-
-                <TouchDemoView style={styles.content_layout}></TouchDemoView>
-
+                <View style={styles.content_layout}>
+                    <Animated.View style={[styles.animated_view, {transform: [
+                        {translateX: this.state.transXValue},
+                        {scale: this.state.scaleXValue},
+                        {rotate: this.state.rotateValue.interpolate({
+                        inputRange: [0,1],
+                        outputRange: ['0deg', '360deg']
+                    })},
+                    ]}]} />
+                </View>
             </View>
         );
     }
 
-    onBtnPress() {
-        console.warn('按钮被点击');
+    onBtnPress = ()=> {
+        this.state.transXValue.setValue(0);
+        this.state.rotateValue.setValue(0);
+        this.state.scaleXValue.setValue(1);
+        Animated.parallel([
+            Animated.spring(
+                this.state.scaleXValue,
+                {
+                    toValue: 0.5,
+                    friction: 10,
+                },
+            ),
+            Animated.decay(
+                this.state.transXValue,
+                {
+                    velocity: 0.3,
+                },
+            ),
+            Animated.timing(
+                this.state.rotateValue,
+                {
+                    toValue: 360,
+                }
+            ),
+        ]).start();
     }
 
-    onLayoutPress() {
-        console.warn('Layout被点击');
-    }
 }
 
 const styles = StyleSheet.create({
@@ -111,10 +132,13 @@ const styles = StyleSheet.create({
     },
     content_layout: {
         flex:1,
-        backgroundColor: '#463322',
         margin:10,
+    },
+    animated_view: {
+        height: 100,
+        width: 100,
+        backgroundColor: '#f3f',
     }
-
 });
 
 AppRegistry.registerComponent('DemoProject', () => DemoProject);
